@@ -88,6 +88,7 @@ contract Campaign {
 
         require(!request.complete);
         require(request.ApprovalCount > ( contributerCount / 2));
+        // approval count is the Request mappings counter - contributer count is total contributers. meaning of the contributers half of them have to of called the approveRequest function. 
 
         request.recipient.transfer(request.value);
         request.complete = true; 
