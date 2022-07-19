@@ -43,8 +43,8 @@ contract Campaign {
 
 // the constructor of the contract. 
     function Campaign(uint minimum, address creator) public {
-        manager = creator;
         minimumContribution = minimum;
+        manager = creator;
     }
 
 // allowing people to contribute to the campaign 
