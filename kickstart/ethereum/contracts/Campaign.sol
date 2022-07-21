@@ -93,4 +93,19 @@ contract Campaign {
         request.recipient.transfer(request.value);
         request.complete = true; 
     }
+
+    function getSummary() public view returns(uint, uint, uint, uint, address) {
+        // balance, Requests, contributers, minimum contribution 
+        return (
+            minimumContribution, 
+            this.balance, 
+            requests.length,
+            approversCount, 
+            manager
+        );
+    }
+    
+    function getRequestCount() public view return (uint) {
+        return requests.length; 
+    }
 }

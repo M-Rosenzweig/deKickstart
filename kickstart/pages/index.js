@@ -3,6 +3,7 @@ import { Card, Button } from "semantic-ui-react";
 // import { useEffect, useState } from "react";
 import factory from "../ethereum/factory";
 import Layout from "../components/Layout";
+import Link from "next/link";
 
 function NewCampaign({ campaigns }) {
   // hooks version
@@ -17,29 +18,47 @@ function NewCampaign({ campaigns }) {
   // },[])
   // console.log(typeof campaigns);
 
-  const items = campaigns.map((item) => {
-    return {
-      header: item,
-      description: <a>View Campaign</a>,
-      fluid: true,
-    };
-  });
+  const renderCampaigns = () => {
+    const items = campaigns.map((ethAddress) => {
+      return {
+        header: ethAddress,
+        description: (
+          <Link
+            href={{
+              pathname: `/campaigns/${ethAddress}`,
+              query: { ethAddress },
+            }}
+          >
+            View Campaign
+          </Link>
+        ),
+        fluid: true,
+      };
+    });
 
-  // the styles are from semantic UI content icon 
+    return <Card.Group items={items} />;
+  };
+
+  // the styles are from semantic UI content icon
 
   return (
     <>
-    <Layout>
-      <div>
-        <h3>Open Campaigns</h3>
-        <Button
-        floated="right"
-        content='Create Campaign'
-        icon='add circle'
-        primary={true}
-        />
-        <Card.Group items={items} />
-      </div>
+      <Layout>
+        <div>
+          <h3>Open Campaigns</h3>
+          <Link href={"/campaigns/new"}>
+            <a>
+              <Button
+                floated="right"
+                content="Create Campaign"
+                icon="add circle"
+                primary={true}
+              />
+            </a>
+          </Link>
+
+          {renderCampaigns()}
+        </div>
       </Layout>
     </>
   );
