@@ -100,12 +100,12 @@ contract Campaign {
             minimumContribution, 
             this.balance, 
             requests.length,
-            approversCount, 
+            contributerCount, 
             manager
         );
     }
-    
-    function getRequestCount() public view return (uint) {
+
+    function getRequestCount() public view returns (uint) {
         return requests.length; 
     }
 }
