@@ -67,7 +67,7 @@ function ShowCampaignDetails({ summary, address }) {
         <Grid.Column width={10}>{renderCards()}</Grid.Column>
 
         <Grid.Column width={6}>
-          <ContributeForm />
+          <ContributeForm address={address} />
         </Grid.Column>
       </Grid>
     </Layout>
