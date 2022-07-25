@@ -65,6 +65,10 @@ function NewCampaign({ campaigns }) {
 }
 
 // this is a next method. Get inital props that returns campaigns and then can pass it to the function above. this is done on the next server before being computed in local browser with java script. this allowed me to render the stuff even while blocking javascript !
+export async function getServerSideProps() {
+  const campaigns = await factory.methods.getDeployedCampaigns().call();
 
+  return { props: { campaigns } };
+}
 
 export default NewCampaign;

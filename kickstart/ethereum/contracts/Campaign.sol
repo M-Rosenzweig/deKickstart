@@ -105,6 +105,8 @@ contract Campaign {
         );
     }
 
+    // I realize now that I misspelled the word Contributor -- maybe I should redeploy the contract 
+
     function getRequestCount() public view returns (uint) {
         return requests.length; 
     }
