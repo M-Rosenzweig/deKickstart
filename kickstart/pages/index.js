@@ -25,8 +25,8 @@ function NewCampaign({ campaigns }) {
         description: (
           <Link
             href={{
-              pathname: `/campaigns/${ethAddress}`,
-              query: { ethAddress },
+              pathname: `/campaigns/${ethAddress}`
+              // query: { ethAddress },
             }}
           >
             View Campaign
