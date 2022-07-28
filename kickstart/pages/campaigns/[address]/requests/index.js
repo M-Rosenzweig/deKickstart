@@ -1,37 +1,85 @@
 import React from "react";
 import Layout from "../../../../components/Layout";
-import { Button } from "semantic-ui-react";
+import { Button, Table } from "semantic-ui-react";
 import Link from "next/link";
 import individualCampaign from "../../../../ethereum/individualCampaign";
+import RequestRow from "../../../../components/RequestRow";
+
+const { Header, Row, HeaderCell, Body } = Table;
 
 export async function getServerSideProps({ params }) {
   const campaign = individualCampaign(params.address);
-  const summary = await campaign.methods.getSummary().call();
+  // const summary = await campaign.methods.getSummary().call();
+  const contributerCount = await campaign.methods.contributerCount().call();
+  const requestCount = await campaign.methods.getRequestCount().call();
+
+  // console.log(summary);
+
+  const requests = await Promise.all(
+    Array(parseInt(requestCount))
+      .fill()
+      .map((el, index) => {
+        return campaign.methods.requests(index).call();
+      })
+  );
+
+  const sanitizedRequests = requests.map(
+    ({ description, value, recipient, complete, ApprovalCount }) => {
+      return { description, value, recipient, complete, ApprovalCount };
+    }
+  );
 
   return {
-    props: {address: params.address}
+    props: {
+      address: params.address,
+      requests: sanitizedRequests || [],
+      contributerCount,
+      requestCount: sanitizedRequests.length || 0,
+    },
   };
 }
 
+function RequestIndex({ address, requests, requestCount, contributerCount }) {
 
-function RequestIndex({address}) {
+  const renderRows = () =>
+  requests.map((request, idx) => {
+    return (
+      <RequestRow
+        request={request}
+        key={idx}
+        id={idx}
+        address={address}
+        contributerCount={contributerCount}
+      />
+    );
+  });
+
   return (
     <Layout>
-      <h3>Requests</h3>
-      <Link
-        href={{
-          pathname: `/campaigns/${address}/requests/new`
-        }}
-      >
-        <a>
-          <Button>Create Request</Button>
-        </a>
+     <h3>Requests</h3>
+      <Link href={`/campaigns/${address}/requests/new`}>
+        <Button style={{ marginBottom: 10 }} floated="right" primary>
+          New Request
+        </Button>
       </Link>
+      <Table>
+        <Header>
+          <Row>
+            <HeaderCell>ID</HeaderCell>
+            <HeaderCell>Description</HeaderCell>
+            <HeaderCell>Amount</HeaderCell>
+            <HeaderCell>Recipient</HeaderCell>
+            <HeaderCell>Approval Count</HeaderCell>
+            <HeaderCell>Approve</HeaderCell>
+            <HeaderCell>Finalize</HeaderCell>
+          </Row>
+        </Header>
+        <Body>{renderRows()}</Body>
+      </Table>
+
+      <div>Found {requestCount} requests</div>
     </Layout>
   );
 }
-
-
-
 
 export default RequestIndex;
