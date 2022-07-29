@@ -31,7 +31,7 @@ contract Campaign {
 // declaring the variables we will be using. The top one is an array of Request mappings(objects).
     Request[] public requests; 
     address public manager;
-    mapping(address => bool) public approvers;
+    mapping(address => bool) public approvers; // i think a better name for this would be contributer
     uint public minimumContribution;
     uint public contributerCount ; 
 
@@ -72,7 +72,7 @@ contract Campaign {
         // request = the specific request at the index specified in the argument 
         Request storage request = requests[index];
 
-        // in order to approve this request you need to be a contributing approver
+        // in order to approve this request you need to be a contributing approver / contributer
         require(approvers[msg.sender]);
         // must return false when asked if sender is in the approvals mapping and already voted
         require(!request.approvals[msg.sender]);
@@ -104,6 +104,13 @@ contract Campaign {
             manager
         );
     }
+
+    // a key ISSUE with this contract is that the same address can be added to the contributerCount but cannot approve twice. 
+    // got to make a way to check if the person exists as a contributer and add to his stake. In this introductory course we are not going into the 
+    // complexity of making it realistic. in a realistic setting we have a couple of issues for making this work. 
+
+    // 1. Unique address approach ---- whats stopping someone (or even the manager) from using a bunch of addresses and taking control of the approvals
+    // 2. Weighted $$ percentage approach --- approvals depending on $$ percentage can leave the little guy insignificant and a bad actor manager can add alot of money to a contract then vote his fraudulent request transaction to himself. 
 
     // I realize now that I misspelled the word Contributor -- maybe I should redeploy the contract 
 

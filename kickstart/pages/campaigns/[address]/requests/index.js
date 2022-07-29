@@ -42,12 +42,12 @@ export async function getServerSideProps({ params }) {
 function RequestIndex({ address, requests, requestCount, contributerCount }) {
 
   const renderRows = () =>
-  requests.map((request, idx) => {
+  requests.map((request, index) => {
     return (
       <RequestRow
         request={request}
-        key={idx}
-        id={idx}
+        key={index}
+        id={index}
         address={address}
         contributerCount={contributerCount}
       />
