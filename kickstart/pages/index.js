@@ -45,7 +45,7 @@ function NewCampaign({ campaigns }) {
     <>
       <Layout>
         <div>
-          <h3>Open Campaigns</h3>
+          <h3>All Open Campaigns</h3>
           <Link href={"/campaigns/new"}>
             <a>
               <Button
